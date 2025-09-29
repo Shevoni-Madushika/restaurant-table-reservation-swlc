@@ -1,0 +1,112 @@
+{
+  "reviews": [
+    {
+      "id": 1,
+      "userId": 1,
+      "userName": "John Smith",
+      "restaurantId": 1,
+      "rating": 4.5,
+      "reviewText": "Excellent Sri Lankan cuisine! The curry was perfectly spiced and the service was outstanding. Will definitely come back.",
+      "createdAt": "2024-01-05T15:30:00"
+    },
+    {
+      "id": 2,
+      "userId": 2,
+      "userName": "Sarah Johnson",
+      "restaurantId": 3,
+      "rating": 4.8,
+      "reviewText": "Absolutely romantic atmosphere and the French dishes were authentic. Perfect for special occasions!",
+      "createdAt": "2024-01-06T20:15:00"
+    },
+    {
+      "id": 3,
+      "userId": 3,
+      "userName": "Mike Chen",
+      "restaurantId": 4,
+      "rating": 4.6,
+      "reviewText": "Fresh sushi and professional service. The chef's selection was amazing. Highly recommended for sushi lovers.",
+      "createdAt": "2024-01-07T12:45:00"
+    },
+    {
+      "id": 4,
+      "userId": 4,
+      "userName": "Emma Wilson",
+      "restaurantId": 8,
+      "rating": 4.9,
+      "reviewText": "Best Italian food in Colombo! The pasta was handmade and the pizza crust was perfect. Authentic Italian experience.",
+      "createdAt": "2024-01-08T18:20:00"
+    },
+    {
+      "id": 5,
+      "userId": 5,
+      "userName": "David Brown",
+      "restaurantId": 2,
+      "rating": 4.3,
+      "reviewText": "Great Asian fusion dishes with creative presentation. The ambiance is modern and comfortable.",
+      "createdAt": "2024-01-09T14:10:00"
+    },
+    {
+      "id": 6,
+      "userId": 1,
+      "userName": "John Smith",
+      "restaurantId": 6,
+      "rating": 4.4,
+      "reviewText": "Fresh Mediterranean flavors and healthy options. The grilled fish was perfectly cooked.",
+      "createdAt": "2024-01-10T16:30:00"
+    },
+    {
+      "id": 7,
+      "userId": 2,
+      "userName": "Sarah Johnson",
+      "restaurantId": 7,
+      "rating": 4.1,
+      "reviewText": "Good burgers with quality ingredients. The vegetarian options were surprisingly tasty.",
+      "createdAt": "2024-01-11T13:25:00"
+    },
+    {
+      "id": 8,
+      "userId": 3,
+      "userName": "Mike Chen",
+      "restaurantId": 5,
+      "rating": 4.2,
+      "reviewText": "Authentic Indian flavors with proper spice levels. The tandoor items were excellent.",
+      "createdAt": "2024-01-12T19:40:00"
+    },
+    {
+      "id": 9,
+      "userId": 4,
+      "userName": "Emma Wilson",
+      "restaurantId": 10,
+      "rating": 4.6,
+      "reviewText": "Fresh seafood with local spices. The crab curry was outstanding!",
+      "createdAt": "2024-01-13T17:15:00"
+    },
+    {
+      "id": 10,
+      "userId": 5,
+      "userName": "David Brown",
+      "restaurantId": 9,
+      "rating": 4.3,
+      "reviewText": "Good Chinese food with traditional flavors. The dim sum was fresh and tasty.",
+      "createdAt": "2024-01-14T11:50:00"
+    },
+    {
+      "id": 11,
+      "userId": 1,
+      "userName": "John Smith",
+      "restaurantId": 11,
+      "rating": 4.0,
+      "reviewText": "Great coffee and light meals. Perfect for breakfast or afternoon coffee break.",
+      "createdAt": "2024-01-15T09:30:00"
+    },
+    {
+      "id": 12,
+      "userId": 2,
+      "userName": "Sarah Johnson",
+      "restaurantId": 12,
+      "rating": 4.5,
+      "reviewText": "Innovative South Asian cuisine with beautiful presentation. The spice combinations were unique.",
+      "createdAt": "2024-01-16T20:00:00"
+    }
+  ]
+}

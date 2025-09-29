@@ -1,0 +1,58 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "username": "johnsmith",
+      "email": "john.smith@email.com",
+      "firstName": "John",
+      "lastName": "Smith",
+      "phoneNumber": "+94 77 123 4567",
+      "role": "CUSTOMER"
+    },
+    {
+      "id": 2,
+      "username": "sarahj",
+      "email": "sarah.johnson@email.com",
+      "firstName": "Sarah",
+      "lastName": "Johnson",
+      "phoneNumber": "+94 77 234 5678",
+      "role": "CUSTOMER"
+    },
+    {
+      "id": 3,
+      "username": "mikechen",
+      "email": "mike.chen@email.com",
+      "firstName": "Mike",
+      "lastName": "Chen",
+      "phoneNumber": "+94 77 345 6789",
+      "role": "CUSTOMER"
+    },
+    {
+      "id": 4,
+      "username": "emmaw",
+      "email": "emma.wilson@email.com",
+      "firstName": "Emma",
+      "lastName": "Wilson",
+      "phoneNumber": "+94 77 456 7890",
+      "role": "CUSTOMER"
+    },
+    {
+      "id": 5,
+      "username": "davidb",
+      "email": "david.brown@email.com",
+      "firstName": "David",
+      "lastName": "Brown",
+      "phoneNumber": "+94 77 567 8901",
+      "role": "CUSTOMER"
+    },
+    {
+      "id": 6,
+      "username": "admin",
+      "email": "admin@tabletop.lk",
+      "firstName": "Admin",
+      "lastName": "User",
+      "phoneNumber": "+94 11 123 4567",
+      "role": "ADMIN"
+    }
+  ]
+}
