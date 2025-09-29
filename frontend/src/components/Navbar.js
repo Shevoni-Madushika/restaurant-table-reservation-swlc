@@ -74,7 +74,11 @@ const Navbar = () => {
   return (
     <BootstrapNavbar bg="dark" expand="lg" className="shadow-sm" variant="dark">
       <Container>
-        <BootstrapNavbar.Brand as={Link} to="/" className="fw-bold">
+        <BootstrapNavbar.Brand 
+          as={Link} 
+          to={isLoggedIn && user?.role === 'ADMIN' ? "/admin" : "/"} 
+          className="fw-bold"
+        >
           🍽️ TableTop.lk
         </BootstrapNavbar.Brand>
         
@@ -82,8 +86,12 @@ const Navbar = () => {
         
         <BootstrapNavbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
-            <Nav.Link as={Link} to="/">Home</Nav.Link>
-            <Nav.Link as={Link} to="/restaurants">Restaurants</Nav.Link>
+            {(!isLoggedIn || user?.role !== 'ADMIN') && (
+              <>
+                <Nav.Link as={Link} to="/">Home</Nav.Link>
+                <Nav.Link as={Link} to="/restaurants">Restaurants</Nav.Link>
+              </>
+            )}
             {isLoggedIn && user?.role !== 'ADMIN' && (
               <>
                 <Nav.Link as={Link} to="/my-bookings">My Bookings</Nav.Link>

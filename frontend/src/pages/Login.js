@@ -135,16 +135,6 @@ const Login = () => {
               <hr />
 
               <div className="text-center">
-                <p className="mb-2">Demo Accounts:</p>
-                <small className="text-muted">
-                  Admin: admin / admin123<br />
-                  User: user / user123
-                </small>
-              </div>
-
-              <hr />
-
-              <div className="text-center">
                 <p className="mb-0">
                   Don't have an account?{' '}
                   <Link to="/register" className="text-decoration-none">
