@@ -4,6 +4,7 @@ import { FaCalendarAlt, FaUsers, FaMapMarkerAlt, FaUtensils, FaClock } from 'rea
 import { Link } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { bookingApi } from '../api/bookingApi';
+import { getBookingErrorMessage } from '../utils/errorMessages';
 
 const MyBookings = () => {
   const [bookings, setBookings] = useState([]);
@@ -55,8 +56,8 @@ const MyBookings = () => {
       const response = await bookingApi.getUserBookings(userId);
       setBookings(response.data);
     } catch (error) {
-      console.error('Error fetching bookings:', error);
-      toast.error('Error loading your bookings');
+      const errorMessage = getBookingErrorMessage(error);
+      toast.error(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -70,8 +71,8 @@ const MyBookings = () => {
         fetchBookings(user.id); // Refresh the list
       }
     } catch (error) {
-      console.error('Error cancelling booking:', error);
-      toast.error('Error cancelling booking');
+      const errorMessage = getBookingErrorMessage(error);
+      toast.error(errorMessage);
     }
   };
 
@@ -158,7 +159,7 @@ const MyBookings = () => {
                     <Card.Body>
                       <div className="mb-3">
                         <div className="d-flex align-items-center mb-2">
-                          <FaCalendarAlt className="me-2 text-primary" />
+                          <FaCalendarAlt className="me-2" style={{color: '#ff6b35'}} />
                           <strong>Date & Time:</strong>
                         </div>
                         <p className="mb-0">{formatDateTime(booking.bookingDateTime)}</p>
@@ -166,7 +167,7 @@ const MyBookings = () => {
 
                       <div className="mb-3">
                         <div className="d-flex align-items-center mb-2">
-                          <FaUsers className="me-2 text-primary" />
+                          <FaUsers className="me-2" style={{color: '#ff6b35'}} />
                           <strong>Party Size:</strong>
                         </div>
                         <p className="mb-0">{booking.numberOfPeople} {booking.numberOfPeople === 1 ? 'person' : 'people'}</p>
@@ -175,7 +176,7 @@ const MyBookings = () => {
                       {booking.specialRequests && (
                         <div className="mb-3">
                           <div className="d-flex align-items-center mb-2">
-                            <FaClock className="me-2 text-primary" />
+                            <FaClock className="me-2" style={{color: '#ff6b35'}} />
                             <strong>Special Requests:</strong>
                           </div>
                           <p className="mb-0">{booking.specialRequests}</p>

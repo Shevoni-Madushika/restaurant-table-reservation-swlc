@@ -7,6 +7,7 @@ import { restaurantApi } from '../api/restaurantApi';
 import { bookingApi } from '../api/bookingApi';
 import { reviewApi } from '../api/reviewApi';
 import { favoriteApi } from '../api/favoriteApi';
+import { getBookingErrorMessage, getFavoriteErrorMessage, getReviewErrorMessage } from '../utils/errorMessages';
 
 const RestaurantDetail = () => {
   const { id } = useParams();
@@ -130,13 +131,8 @@ const RestaurantDetail = () => {
         specialRequests: ''
       });
     } catch (error) {
-      console.error('Error creating booking:', error);
-      if (error.response?.status === 401) {
-        toast.error('Please login to make a booking');
-        navigate('/login');
-      } else {
-        toast.error('Error submitting booking request');
-      }
+      const errorMessage = getBookingErrorMessage(error);
+      toast.error(errorMessage);
     }
   };
 
@@ -171,8 +167,8 @@ const RestaurantDetail = () => {
         toast.success('Added to favorites');
       }
     } catch (error) {
-      console.error('Error toggling favorite:', error);
-      toast.error('Error updating favorites');
+      const errorMessage = getFavoriteErrorMessage(error);
+      toast.error(errorMessage);
     }
   };
 
@@ -199,8 +195,8 @@ const RestaurantDetail = () => {
       fetchReviews(); // Refresh reviews
       fetchRestaurant(); // Refresh restaurant data (rating might change)
     } catch (error) {
-      console.error('Error submitting review:', error);
-      toast.error('Error submitting review');
+      const errorMessage = getReviewErrorMessage(error);
+      toast.error(errorMessage);
     }
   };
 

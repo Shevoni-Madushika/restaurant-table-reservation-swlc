@@ -434,3 +434,353 @@ code {
 .btn:not(.btn-outline-primary):not(.btn-outline-danger):not(.btn-outline-info):not(.btn-outline-secondary) {
   border: none;
 }
+
+/* Replace all blue colors with orange theme */
+.btn-info {
+  background: linear-gradient(45deg, #ff6b35, #ff8c42);
+  border: none;
+  border-radius: 25px;
+  padding: 10px 25px;
+  font-weight: 500;
+  color: #ffffff;
+}
+
+.btn-info:hover {
+  background: linear-gradient(45deg, #ff5722, #ff7043);
+  transform: translateY(-2px);
+  color: #ffffff;
+}
+
+.btn-outline-info {
+  background: transparent;
+  border: 2px solid #ff6b35;
+  border-radius: 25px;
+  padding: 8px 23px;
+  font-weight: 500;
+  color: #ff6b35;
+}
+
+.btn-outline-info:hover {
+  background: linear-gradient(45deg, #ff6b35, #ff8c42);
+  border-color: #ff6b35;
+  color: #ffffff;
+  transform: translateY(-2px);
+}
+
+/* Override Bootstrap primary blue with orange */
+.btn-primary {
+  background: linear-gradient(45deg, #ff6b35, #ff8c42) !important;
+  border: none !important;
+  border-radius: 25px;
+  padding: 10px 25px;
+  font-weight: 500;
+  color: #ffffff !important;
+}
+
+/* Ensure all button text is visible */
+.btn {
+  color: #ffffff !important;
+}
+
+.btn-primary,
+.btn-secondary,
+.btn-success,
+.btn-danger,
+.btn-warning,
+.btn-info,
+.btn-light,
+.btn-dark {
+  color: #ffffff !important;
+}
+
+/* Specific overrides for button text visibility */
+.btn-warning {
+  background: linear-gradient(45deg, #ff6b35, #ff8c42) !important;
+  border: none !important;
+  color: #ffffff !important;
+}
+
+.btn-warning:hover {
+  background: linear-gradient(45deg, #ff5722, #ff7043) !important;
+  color: #ffffff !important;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(45deg, #ff5722, #ff7043) !important;
+  transform: translateY(-2px);
+  color: #ffffff !important;
+}
+
+.btn-primary:focus {
+  background: linear-gradient(45deg, #ff6b35, #ff8c42) !important;
+  border: none !important;
+  box-shadow: 0 0 0 0.2rem rgba(255, 107, 53, 0.25) !important;
+  color: #ffffff !important;
+}
+
+/* Override Bootstrap link colors */
+a {
+  color: #ff6b35 !important;
+}
+
+a:hover {
+  color: #ff8c42 !important;
+}
+
+/* Override Bootstrap text colors */
+.text-info {
+  color: #ff6b35 !important;
+}
+
+.text-primary {
+  color: #ff6b35 !important;
+}
+
+/* Override Bootstrap background colors */
+.bg-primary {
+  background-color: #ff6b35 !important;
+}
+
+.bg-info {
+  background-color: #ff6b35 !important;
+}
+
+/* Override Bootstrap border colors */
+.border-primary {
+  border-color: #ff6b35 !important;
+}
+
+.border-info {
+  border-color: #ff6b35 !important;
+}
+
+/* Override Bootstrap alert colors */
+.alert-primary {
+  background-color: #3c2c1a;
+  border-color: #ff6b35;
+  color: #ff6b35;
+}
+
+.alert-info {
+  background-color: #3c2c1a;
+  border-color: #ff6b35;
+  color: #ff6b35;
+}
+
+/* Override Bootstrap badge colors */
+.badge-primary {
+  background-color: #ff6b35 !important;
+  color: #ffffff !important;
+}
+
+.badge-info {
+  background-color: #ff6b35 !important;
+  color: #ffffff !important;
+}
+
+/* Override Bootstrap progress bars */
+.progress-bar {
+  background-color: #ff6b35 !important;
+}
+
+.progress-bar-info {
+  background-color: #ff6b35 !important;
+}
+
+/* Override Bootstrap list group */
+.list-group-item-primary {
+  background-color: #3c2c1a;
+  color: #ff6b35;
+  border-color: #ff6b35;
+}
+
+.list-group-item-info {
+  background-color: #3c2c1a;
+  color: #ff6b35;
+  border-color: #ff6b35;
+}
+
+/* Override Bootstrap pagination */
+.page-link {
+  color: #ff6b35;
+  background-color: #3c3c3c;
+  border-color: #555555;
+}
+
+.page-link:hover {
+  color: #ff8c42;
+  background-color: #4c4c4c;
+  border-color: #ff6b35;
+}
+
+.page-item.active .page-link {
+  background-color: #ff6b35;
+  border-color: #ff6b35;
+  color: #ffffff;
+}
+
+/* Override Bootstrap dropdown */
+.dropdown-item:hover {
+  background-color: #ff6b35;
+  color: #ffffff;
+}
+
+.dropdown-item.active {
+  background-color: #ff6b35;
+  color: #ffffff;
+}
+
+/* Override Bootstrap nav tabs */
+.nav-tabs .nav-link.active {
+  background-color: #ff6b35;
+  border-color: #ff6b35;
+  color: #ffffff;
+}
+
+.nav-tabs .nav-link:hover {
+  border-color: #ff6b35;
+  color: #ff6b35;
+}
+
+/* Override Bootstrap nav pills */
+.nav-pills .nav-link.active {
+  background-color: #ff6b35;
+  color: #ffffff;
+}
+
+.nav-pills .nav-link:hover {
+  color: #ff6b35;
+}
+
+/* Override Bootstrap breadcrumb */
+.breadcrumb-item.active {
+  color: #ff6b35;
+}
+
+/* Override Bootstrap close button */
+.btn-close {
+  filter: invert(1);
+}
+
+/* Override Bootstrap spinner */
+.spinner-border-primary {
+  color: #ff6b35 !important;
+}
+
+.spinner-border-info {
+  color: #ff6b35 !important;
+}
+
+/* Override Bootstrap tooltip */
+.tooltip .tooltip-inner {
+  background-color: #ff6b35;
+  color: #ffffff;
+}
+
+.tooltip.bs-tooltip-top .tooltip-arrow::before {
+  border-top-color: #ff6b35;
+}
+
+.tooltip.bs-tooltip-bottom .tooltip-arrow::before {
+  border-bottom-color: #ff6b35;
+}
+
+.tooltip.bs-tooltip-start .tooltip-arrow::before {
+  border-left-color: #ff6b35;
+}
+
+.tooltip.bs-tooltip-end .tooltip-arrow::before {
+  border-right-color: #ff6b35;
+}
+
+/* Override Bootstrap popover */
+.popover {
+  background-color: #3c3c3c;
+  border-color: #ff6b35;
+  color: #ffffff;
+}
+
+.popover-header {
+  background-color: #4c4c4c;
+  border-bottom-color: #ff6b35;
+  color: #ffffff;
+}
+
+.popover-body {
+  color: #ffffff;
+}
+
+/* Override Bootstrap modal */
+.modal-header .btn-close {
+  filter: invert(1);
+}
+
+/* Override any remaining blue colors */
+* {
+  --bs-primary: #ff6b35;
+  --bs-info: #ff6b35;
+}
+
+/* Force override any remaining blue elements */
+[class*="btn-primary"],
+[class*="btn-info"],
+[class*="text-primary"],
+[class*="text-info"],
+[class*="bg-primary"],
+[class*="bg-info"],
+[class*="border-primary"],
+[class*="border-info"] {
+  color: #ff6b35 !important;
+  background-color: #ff6b35 !important;
+  border-color: #ff6b35 !important;
+}
+
+/* Override Bootstrap Alert variants */
+.alert-info {
+  background-color: #3c2c1a !important;
+  border-color: #ff6b35 !important;
+  color: #ff6b35 !important;
+}
+
+.alert-primary {
+  background-color: #3c2c1a !important;
+  border-color: #ff6b35 !important;
+  color: #ff6b35 !important;
+}
+
+/* Override any remaining Bootstrap blue components */
+.btn-primary,
+.btn-info,
+.alert-info,
+.alert-primary,
+.badge-primary,
+.badge-info,
+.text-primary,
+.text-info,
+.bg-primary,
+.bg-info,
+.border-primary,
+.border-info {
+  background-color: #ff6b35 !important;
+  border-color: #ff6b35 !important;
+  color: #ffffff !important;
+}
+
+/* Ensure all primary/info variants use orange theme */
+[data-bs-theme="dark"] .btn-primary,
+[data-bs-theme="dark"] .btn-info,
+[data-bs-theme="dark"] .alert-info,
+[data-bs-theme="dark"] .alert-primary {
+  background-color: #ff6b35 !important;
+  border-color: #ff6b35 !important;
+  color: #ffffff !important;
+}
+
+/* Override any inline styles that might use blue */
+[style*="background-color: #007bff"],
+[style*="background-color: #0dcaf0"],
+[style*="color: #007bff"],
+[style*="color: #0dcaf0"] {
+  background-color: #ff6b35 !important;
+  color: #ffffff !important;
+}

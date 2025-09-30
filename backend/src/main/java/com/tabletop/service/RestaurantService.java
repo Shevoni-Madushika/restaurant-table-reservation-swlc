@@ -66,6 +66,31 @@ public class RestaurantService {
                 .collect(Collectors.toList());
     }
     
+    public List<RestaurantDTO> getPublicRestaurants(String city, String cuisine, 
+                                                   BigDecimal minRating, Boolean isActive) {
+        // If no filters provided, return all active restaurants
+        if (city == null && cuisine == null && minRating == null && isActive == null) {
+            return restaurantRepository.findByIsActiveTrue()
+                    .stream()
+                    .map(this::convertToDTO)
+                    .collect(Collectors.toList());
+        }
+        
+        // Use existing search functionality with additional active filter
+        List<Restaurant> restaurants = restaurantRepository.findRestaurantsWithFilters(city, cuisine, minRating);
+        
+        // Filter by active status if specified
+        if (isActive != null) {
+            restaurants = restaurants.stream()
+                    .filter(r -> r.getIsActive().equals(isActive))
+                    .collect(Collectors.toList());
+        }
+        
+        return restaurants.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+    
     public RestaurantDTO createRestaurant(Restaurant restaurant) {
         Restaurant savedRestaurant = restaurantRepository.save(restaurant);
         return convertToDTO(savedRestaurant);

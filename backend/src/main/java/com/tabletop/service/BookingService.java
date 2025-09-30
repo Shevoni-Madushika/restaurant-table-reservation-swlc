@@ -7,6 +7,7 @@ import com.tabletop.entity.User;
 import com.tabletop.repository.BookingRepository;
 import com.tabletop.repository.RestaurantRepository;
 import com.tabletop.repository.UserRepository;
+import com.tabletop.service.ExternalRestaurantApiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +26,9 @@ public class BookingService {
     
     @Autowired
     private UserRepository userRepository;
+    
+    @Autowired
+    private ExternalRestaurantApiService externalRestaurantApiService;
     
     public List<BookingDTO> getAllBookings() {
         return bookingRepository.findAll()
@@ -58,13 +62,23 @@ public class BookingService {
         Restaurant restaurant = restaurantRepository.findById(bookingDTO.getRestaurantId())
                 .orElseThrow(() -> new RuntimeException("Restaurant not found"));
         
+        // Call external restaurant API first
+        ExternalRestaurantApiService.ExternalBookingResult externalResult = 
+            externalRestaurantApiService.callRestaurantApi(restaurant.getId(), bookingDTO);
+        
+        // If external API call failed, throw exception
+        if (!externalResult.isSuccess()) {
+            throw new RuntimeException("Restaurant booking failed: " + externalResult.getMessage());
+        }
+        
+        // Create booking in our database only if external API call succeeded
         Booking booking = new Booking();
         booking.setUser(user);
         booking.setRestaurant(restaurant);
         booking.setBookingDateTime(bookingDTO.getBookingDateTime());
         booking.setNumberOfPeople(bookingDTO.getNumberOfPeople());
         booking.setSpecialRequests(bookingDTO.getSpecialRequests());
-        booking.setStatus(Booking.BookingStatus.PENDING);
+        booking.setStatus(Booking.BookingStatus.CONFIRMED); // Set as confirmed since external API succeeded
         
         Booking savedBooking = bookingRepository.save(booking);
         return convertToDTO(savedBooking);

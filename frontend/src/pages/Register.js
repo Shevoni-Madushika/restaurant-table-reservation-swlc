@@ -70,7 +70,7 @@ const Register = () => {
       <Row className="justify-content-center">
         <Col md={8} lg={6}>
           <Card className="shadow">
-            <Card.Header className="text-center bg-primary text-white">
+            <Card.Header className="text-center" style={{backgroundColor: '#ff6b35', color: '#ffffff'}}>
               <h3 className="mb-0">
                 <FaUserPlus className="me-2" />
                 Create Account

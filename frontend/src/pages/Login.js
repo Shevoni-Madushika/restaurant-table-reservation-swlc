@@ -77,7 +77,7 @@ const Login = () => {
       <Row className="justify-content-center">
         <Col md={6} lg={4}>
           <Card className="shadow">
-            <Card.Header className="text-center bg-primary text-white">
+            <Card.Header className="text-center" style={{backgroundColor: '#ff6b35', color: '#ffffff'}}>
               <h3 className="mb-0">
                 <FaSignInAlt className="me-2" />
                 Login

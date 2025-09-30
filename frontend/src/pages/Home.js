@@ -321,7 +321,7 @@ const Home = () => {
                       to={`/restaurant/${restaurant.id}`}
                       variant="warning"
                       size="sm"
-                      style={{ backgroundColor: '#ff6b35', borderColor: '#ff6b35' }}
+                      style={{ backgroundColor: '#ff6b35', borderColor: '#ff6b35', color: '#ffffff' }}
                     >
                       View Details
                     </Button>

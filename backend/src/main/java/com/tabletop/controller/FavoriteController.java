@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -63,14 +64,33 @@ public class FavoriteController {
     
     @DeleteMapping("/user/{userId}/restaurant/{restaurantId}")
     public ResponseEntity<Void> removeFromFavorites(@PathVariable Long userId, @PathVariable Long restaurantId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-        
-        Restaurant restaurant = restaurantRepository.findById(restaurantId)
-                .orElseThrow(() -> new RuntimeException("Restaurant not found"));
-        
-        favoriteRepository.deleteByUserAndRestaurant(user, restaurant);
-        return ResponseEntity.ok().build();
+        try {
+            System.out.println("Attempting to remove favorite for user: " + userId + ", restaurant: " + restaurantId);
+            
+            User user = userRepository.findById(userId)
+                    .orElseThrow(() -> new RuntimeException("User not found"));
+            
+            Restaurant restaurant = restaurantRepository.findById(restaurantId)
+                    .orElseThrow(() -> new RuntimeException("Restaurant not found"));
+            
+            System.out.println("Found user: " + user.getEmail() + ", restaurant: " + restaurant.getName());
+            
+            // Find the favorite first
+            Optional<Favorite> favorite = favoriteRepository.findByUserAndRestaurant(user, restaurant);
+            if (favorite.isPresent()) {
+                System.out.println("Found favorite with ID: " + favorite.get().getId());
+                favoriteRepository.delete(favorite.get());
+                System.out.println("Successfully deleted favorite");
+                return ResponseEntity.ok().build();
+            } else {
+                System.out.println("No favorite found for this user-restaurant combination");
+                return ResponseEntity.notFound().build();
+            }
+        } catch (Exception e) {
+            System.err.println("Error removing favorite: " + e.getMessage());
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
+        }
     }
     
     @DeleteMapping("/{id}")

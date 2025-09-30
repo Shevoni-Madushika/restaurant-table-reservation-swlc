@@ -43,12 +43,21 @@ const Favorites = () => {
       }
       
       const parsedUser = JSON.parse(user);
-      await favoriteApi.removeFromFavorites(parsedUser.id, restaurantId);
-      setFavorites(favorites.filter(fav => fav.restaurantId !== restaurantId));
+      console.log('Removing favorite for user:', parsedUser.id, 'restaurant:', restaurantId);
+      
+      const response = await favoriteApi.removeFromFavorites(parsedUser.id, restaurantId);
+      console.log('Remove favorite response:', response);
+      
+      // Update the local state
+      setFavorites(prevFavorites => prevFavorites.filter(fav => fav.restaurantId !== restaurantId));
       toast.success('Restaurant removed from favorites');
     } catch (error) {
       console.error('Error removing favorite:', error);
-      toast.error('Error removing favorite');
+      if (error.response) {
+        console.error('Error response:', error.response.data);
+        console.error('Error status:', error.response.status);
+      }
+      toast.error('Error removing favorite: ' + (error.response?.data?.message || error.message));
     }
   };
 
@@ -142,6 +151,7 @@ const Favorites = () => {
                             variant="primary"
                             size="sm"
                             className="me-2"
+                            style={{ color: '#ffffff' }}
                           >
                             View Details
                           </Button>
