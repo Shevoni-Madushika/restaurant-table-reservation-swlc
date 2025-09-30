@@ -1,13 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Card, Button, Form, Spinner } from 'react-bootstrap';
-import { FaSearch, FaStar, FaMapMarkerAlt, FaUtensils } from 'react-icons/fa';
+import { FaSearch, FaStar, FaMapMarkerAlt, FaUtensils, FaHeart } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { restaurantApi } from '../api/restaurantApi';
+import { favoriteApi } from '../api/favoriteApi';
+import toast from 'react-hot-toast';
 
 const Home = () => {
   const [restaurants, setRestaurants] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null);
+  const [favorites, setFavorites] = useState(new Set());
   const [filters, setFilters] = useState({
     city: '',
     cuisine: '',
@@ -16,7 +21,55 @@ const Home = () => {
 
   useEffect(() => {
     fetchRestaurants();
+    checkAuthStatus();
+    
+    // Listen for login/logout events
+    const handleUserLogin = (event) => {
+      const { user } = event.detail;
+      setIsLoggedIn(true);
+      setCurrentUser(user);
+      fetchFavorites(user.id);
+    };
+    
+    const handleUserLogout = () => {
+      setIsLoggedIn(false);
+      setCurrentUser(null);
+      setFavorites(new Set());
+    };
+
+    window.addEventListener('userLoggedIn', handleUserLogin);
+    window.addEventListener('userLoggedOut', handleUserLogout);
+
+    return () => {
+      window.removeEventListener('userLoggedIn', handleUserLogin);
+      window.removeEventListener('userLoggedOut', handleUserLogout);
+    };
   }, []);
+
+  const checkAuthStatus = () => {
+    const user = localStorage.getItem('user');
+    const token = localStorage.getItem('token');
+    
+    if (user && token) {
+      const parsedUser = JSON.parse(user);
+      setIsLoggedIn(true);
+      setCurrentUser(parsedUser);
+      fetchFavorites(parsedUser.id);
+    } else {
+      setIsLoggedIn(false);
+      setCurrentUser(null);
+    }
+  };
+
+  const fetchFavorites = async (userId) => {
+    try {
+      const response = await favoriteApi.getFavorites(userId);
+      const favoriteIds = new Set(response.data.map(fav => fav.restaurantId));
+      setFavorites(favoriteIds);
+    } catch (error) {
+      console.error('Error fetching favorites:', error);
+    }
+  };
 
   const fetchRestaurants = async () => {
     try {
@@ -54,6 +107,34 @@ const Home = () => {
       ...filters,
       [e.target.name]: e.target.value
     });
+  };
+
+  const handleToggleFavorite = async (restaurantId) => {
+    if (!isLoggedIn) {
+      toast.error('Please login to add favorites');
+      return;
+    }
+
+    try {
+      const isFavorited = favorites.has(restaurantId);
+      
+      if (isFavorited) {
+        await favoriteApi.removeFromFavorites(currentUser.id, restaurantId);
+        setFavorites(prev => {
+          const newFavorites = new Set(prev);
+          newFavorites.delete(restaurantId);
+          return newFavorites;
+        });
+        toast.success('Removed from favorites');
+      } else {
+        await favoriteApi.addToFavorites(currentUser.id, restaurantId);
+        setFavorites(prev => new Set([...prev, restaurantId]));
+        toast.success('Added to favorites');
+      }
+    } catch (error) {
+      console.error('Error toggling favorite:', error);
+      toast.error('Error updating favorites');
+    }
   };
 
   const renderStars = (rating) => {
@@ -197,6 +278,16 @@ const Home = () => {
                       {restaurant.rating}
                     </span>
                   </div>
+                  {isLoggedIn && (
+                    <Button
+                      variant={favorites.has(restaurant.id) ? "danger" : "outline-danger"}
+                      size="sm"
+                      className="position-absolute top-0 start-0 m-3"
+                      onClick={() => handleToggleFavorite(restaurant.id)}
+                    >
+                      <FaHeart />
+                    </Button>
+                  )}
                 </div>
                 <Card.Body>
                   <Card.Title className="h5">{restaurant.name}</Card.Title>

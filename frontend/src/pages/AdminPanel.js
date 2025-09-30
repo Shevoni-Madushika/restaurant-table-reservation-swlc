@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Card, Button, Table, Badge, Spinner, Alert, Modal, Form } from 'react-bootstrap';
 import { FaPlus, FaEdit, FaTrash, FaEye, FaChartBar, FaUsers, FaUtensils, FaCalendarAlt } from 'react-icons/fa';
-import { toast } from 'react-toastify';
+import toast from 'react-hot-toast';
 import { restaurantApi } from '../api/restaurantApi';
 import { bookingApi } from '../api/bookingApi';
 

@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Card, Button, Spinner, Alert } from 'react-bootstrap';
 import { FaStar, FaMapMarkerAlt, FaUtensils, FaHeart } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import { restaurantApi } from '../api/restaurantApi';
+import toast from 'react-hot-toast';
+import { favoriteApi } from '../api/favoriteApi';
 
 const Favorites = () => {
   const [favorites, setFavorites] = useState([]);
@@ -16,10 +16,16 @@ const Favorites = () => {
   const fetchFavorites = async () => {
     try {
       setLoading(true);
-      // In a real app, this would fetch user's favorite restaurants
-      // For now, we'll show some sample favorites
-      const response = await restaurantApi.getAllRestaurants();
-      setFavorites(response.data.slice(0, 4)); // Show first 4 as favorites
+      // Get current user
+      const user = localStorage.getItem('user');
+      if (!user) {
+        setFavorites([]);
+        return;
+      }
+      
+      const parsedUser = JSON.parse(user);
+      const response = await favoriteApi.getFavorites(parsedUser.id);
+      setFavorites(response.data);
     } catch (error) {
       console.error('Error fetching favorites:', error);
       toast.error('Error loading your favorites');
@@ -30,8 +36,15 @@ const Favorites = () => {
 
   const handleRemoveFavorite = async (restaurantId) => {
     try {
-      // In a real app, this would remove from user's favorites
-      setFavorites(favorites.filter(fav => fav.id !== restaurantId));
+      const user = localStorage.getItem('user');
+      if (!user) {
+        toast.error('Please login to manage favorites');
+        return;
+      }
+      
+      const parsedUser = JSON.parse(user);
+      await favoriteApi.removeFromFavorites(parsedUser.id, restaurantId);
+      setFavorites(favorites.filter(fav => fav.restaurantId !== restaurantId));
       toast.success('Restaurant removed from favorites');
     } catch (error) {
       console.error('Error removing favorite:', error);
@@ -95,56 +108,37 @@ const Favorites = () => {
                   <Card className="restaurant-card h-100">
                     <div className="position-relative">
                       <img
-                        src={restaurant.imageUrl || 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=500'}
-                        alt={restaurant.name}
+                        src={restaurant.restaurantImageUrl || 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=500'}
+                        alt={restaurant.restaurantName}
                         className="restaurant-image"
                       />
-                      <div className="position-absolute top-0 end-0 m-3">
-                        <span className="rating-badge">
-                          <FaStar className="me-1" />
-                          {restaurant.rating}
-                        </span>
-                      </div>
                       <Button
                         variant="danger"
                         size="sm"
                         className="position-absolute top-0 start-0 m-3"
-                        onClick={() => handleRemoveFavorite(restaurant.id)}
+                        onClick={() => handleRemoveFavorite(restaurant.restaurantId)}
                       >
                         <FaHeart />
                       </Button>
                     </div>
                     <Card.Body>
-                      <Card.Title className="h5">{restaurant.name}</Card.Title>
+                      <Card.Title className="h5">{restaurant.restaurantName}</Card.Title>
                       <Card.Text className="text-muted mb-2">
                         <FaMapMarkerAlt className="me-1" />
-                        {restaurant.city}
+                        {restaurant.restaurantCity}
                       </Card.Text>
                       <Card.Text className="text-muted mb-3">
                         <FaUtensils className="me-1" />
-                        {restaurant.cuisine}
-                      </Card.Text>
-                      <Card.Text className="small text-muted mb-3">
-                        {restaurant.description.substring(0, 100)}...
+                        {restaurant.restaurantCuisine}
                       </Card.Text>
                       <div className="d-flex justify-content-between align-items-center">
                         <div>
-                          {(restaurant.totalReviews && restaurant.totalReviews > 0) && (
-                            <>
-                              {renderStars(restaurant.rating)}
-                              <span className="ms-2 text-muted">
-                                ({restaurant.totalReviews} reviews)
-                              </span>
-                            </>
-                          )}
-                          {(!restaurant.totalReviews || restaurant.totalReviews === 0) && (
-                            <span className="text-muted">No reviews yet</span>
-                          )}
+                          <span className="text-muted">Added to favorites</span>
                         </div>
                         <div>
                           <Button
                             as={Link}
-                            to={`/restaurant/${restaurant.id}`}
+                            to={`/restaurant/${restaurant.restaurantId}`}
                             variant="primary"
                             size="sm"
                             className="me-2"

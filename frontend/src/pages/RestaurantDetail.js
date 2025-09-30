@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { Container, Row, Col, Card, Button, Form, Spinner, Alert, Badge } from 'react-bootstrap';
-import { FaStar, FaMapMarkerAlt, FaPhone, FaGlobe, FaUtensils, FaUsers, FaCalendarAlt, FaSignInAlt } from 'react-icons/fa';
-import { toast } from 'react-toastify';
+import { FaStar, FaMapMarkerAlt, FaPhone, FaGlobe, FaUtensils, FaUsers, FaCalendarAlt, FaSignInAlt, FaHeart } from 'react-icons/fa';
+import toast from 'react-hot-toast';
 import { restaurantApi } from '../api/restaurantApi';
 import { bookingApi } from '../api/bookingApi';
+import { reviewApi } from '../api/reviewApi';
+import { favoriteApi } from '../api/favoriteApi';
 
 const RestaurantDetail = () => {
   const { id } = useParams();
@@ -17,11 +19,19 @@ const RestaurantDetail = () => {
     specialRequests: ''
   });
   const [showBookingForm, setShowBookingForm] = useState(false);
+  const [showReviewForm, setShowReviewForm] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
+  const [reviews, setReviews] = useState([]);
+  const [isFavorited, setIsFavorited] = useState(false);
+  const [reviewForm, setReviewForm] = useState({
+    rating: 5,
+    reviewText: ''
+  });
 
   useEffect(() => {
     fetchRestaurant();
+    fetchReviews();
     checkAuthStatus();
     
     // Listen for login/logout events
@@ -29,12 +39,15 @@ const RestaurantDetail = () => {
       const { user } = event.detail;
       setIsLoggedIn(true);
       setCurrentUser(user);
+      checkIfFavorited(user.id);
     };
     
     const handleUserLogout = () => {
       setIsLoggedIn(false);
       setCurrentUser(null);
       setShowBookingForm(false); // Hide booking form on logout
+      setShowReviewForm(false);
+      setIsFavorited(false);
     };
 
     window.addEventListener('userLoggedIn', handleUserLogin);
@@ -51,11 +64,31 @@ const RestaurantDetail = () => {
     const token = localStorage.getItem('token');
     
     if (user && token) {
+      const parsedUser = JSON.parse(user);
       setIsLoggedIn(true);
-      setCurrentUser(JSON.parse(user));
+      setCurrentUser(parsedUser);
+      checkIfFavorited(parsedUser.id);
     } else {
       setIsLoggedIn(false);
       setCurrentUser(null);
+    }
+  };
+
+  const fetchReviews = async () => {
+    try {
+      const response = await reviewApi.getReviewsByRestaurant(id);
+      setReviews(response.data);
+    } catch (error) {
+      console.error('Error fetching reviews:', error);
+    }
+  };
+
+  const checkIfFavorited = async (userId) => {
+    try {
+      const response = await favoriteApi.isFavorited(userId, id);
+      setIsFavorited(response.data);
+    } catch (error) {
+      console.error('Error checking favorite status:', error);
     }
   };
 
@@ -112,6 +145,63 @@ const RestaurantDetail = () => {
       ...bookingForm,
       [e.target.name]: e.target.value
     });
+  };
+
+  const handleReviewInputChange = (e) => {
+    setReviewForm({
+      ...reviewForm,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const handleToggleFavorite = async () => {
+    if (!isLoggedIn) {
+      toast.error('Please login to add favorites');
+      return;
+    }
+
+    try {
+      if (isFavorited) {
+        await favoriteApi.removeFromFavorites(currentUser.id, id);
+        setIsFavorited(false);
+        toast.success('Removed from favorites');
+      } else {
+        await favoriteApi.addToFavorites(currentUser.id, id);
+        setIsFavorited(true);
+        toast.success('Added to favorites');
+      }
+    } catch (error) {
+      console.error('Error toggling favorite:', error);
+      toast.error('Error updating favorites');
+    }
+  };
+
+  const handleReviewSubmit = async (e) => {
+    e.preventDefault();
+    
+    if (!isLoggedIn) {
+      toast.error('Please login to submit a review');
+      return;
+    }
+
+    try {
+      const reviewData = {
+        userId: currentUser.id,
+        restaurantId: parseInt(id),
+        rating: parseFloat(reviewForm.rating),
+        reviewText: reviewForm.reviewText
+      };
+
+      await reviewApi.createReview(reviewData);
+      toast.success('Review submitted successfully!');
+      setShowReviewForm(false);
+      setReviewForm({ rating: 5, reviewText: '' });
+      fetchReviews(); // Refresh reviews
+      fetchRestaurant(); // Refresh restaurant data (rating might change)
+    } catch (error) {
+      console.error('Error submitting review:', error);
+      toast.error('Error submitting review');
+    }
   };
 
   const renderStars = (rating) => {
@@ -177,15 +267,25 @@ const RestaurantDetail = () => {
                 </Badge>
               </div>
               {isLoggedIn ? (
-                <Button
-                  variant="warning"
-                  size="lg"
-                  onClick={() => setShowBookingForm(true)}
-                  style={{ backgroundColor: '#ff6b35', borderColor: '#ff6b35' }}
-                >
-                  <FaCalendarAlt className="me-2" />
-                  Book a Table
-                </Button>
+                <div className="d-flex gap-2">
+                  <Button
+                    variant="warning"
+                    size="lg"
+                    onClick={() => setShowBookingForm(true)}
+                    style={{ backgroundColor: '#ff6b35', borderColor: '#ff6b35' }}
+                  >
+                    <FaCalendarAlt className="me-2" />
+                    Book a Table
+                  </Button>
+                  <Button
+                    variant={isFavorited ? "danger" : "outline-danger"}
+                    size="lg"
+                    onClick={handleToggleFavorite}
+                  >
+                    <FaHeart className="me-2" />
+                    {isFavorited ? 'Remove from Favorites' : 'Add to Favorites'}
+                  </Button>
+                </div>
               ) : (
                 <div>
                   <Button
@@ -250,46 +350,102 @@ const RestaurantDetail = () => {
                 <h4 className="mb-0">Reviews ({restaurant.totalReviews || 0})</h4>
               </Card.Header>
               <Card.Body>
-                {(restaurant.totalReviews && restaurant.totalReviews > 0) ? (
+                {(reviews && reviews.length > 0) ? (
                   <div className="text-center py-4">
                     <h2 className="display-6">{restaurant.rating}</h2>
                     <div className="mb-3">
                       {renderStars(restaurant.rating)}
                     </div>
-                    <p className="text-muted">Based on {restaurant.totalReviews} reviews</p>
+                    <p className="text-muted">Based on {reviews.length} reviews</p>
                   </div>
                 ) : (
                   <div className="text-center py-4">
                     <p className="text-muted">No reviews yet</p>
                   </div>
                 )}
-                
-                {/* Sample Reviews */}
-                <div className="review-card">
-                  <div className="d-flex justify-content-between align-items-start mb-2">
-                    <h6 className="mb-0">John Smith</h6>
-                    <div>
-                      {renderStars(4.5)}
-                    </div>
-                  </div>
-                  <p className="text-muted small mb-0">2 days ago</p>
-                  <p className="mt-2 mb-0">
-                    Excellent food and service! The atmosphere was perfect for our anniversary dinner.
-                  </p>
-                </div>
 
-                <div className="review-card">
-                  <div className="d-flex justify-content-between align-items-start mb-2">
-                    <h6 className="mb-0">Sarah Johnson</h6>
-                    <div>
-                      {renderStars(4.8)}
-                    </div>
+                {/* Add Review Button */}
+                {isLoggedIn && (
+                  <div className="text-center mb-4">
+                    <Button
+                      variant="primary"
+                      onClick={() => setShowReviewForm(true)}
+                    >
+                      Write a Review
+                    </Button>
                   </div>
-                  <p className="text-muted small mb-0">1 week ago</p>
-                  <p className="mt-2 mb-0">
-                    Amazing experience! The staff was very attentive and the food was delicious.
-                  </p>
-                </div>
+                )}
+
+                {/* Review Form */}
+                {showReviewForm && isLoggedIn && (
+                  <Card className="mb-4">
+                    <Card.Header>
+                      <h5 className="mb-0">Write a Review</h5>
+                    </Card.Header>
+                    <Card.Body>
+                      <Form onSubmit={handleReviewSubmit}>
+                        <Form.Group className="mb-3">
+                          <Form.Label>Rating</Form.Label>
+                          <Form.Select
+                            name="rating"
+                            value={reviewForm.rating}
+                            onChange={handleReviewInputChange}
+                            required
+                          >
+                            <option value="5">5 Stars - Excellent</option>
+                            <option value="4">4 Stars - Very Good</option>
+                            <option value="3">3 Stars - Good</option>
+                            <option value="2">2 Stars - Fair</option>
+                            <option value="1">1 Star - Poor</option>
+                          </Form.Select>
+                        </Form.Group>
+
+                        <Form.Group className="mb-3">
+                          <Form.Label>Your Review</Form.Label>
+                          <Form.Control
+                            as="textarea"
+                            rows={4}
+                            name="reviewText"
+                            value={reviewForm.reviewText}
+                            onChange={handleReviewInputChange}
+                            placeholder="Share your experience..."
+                            required
+                          />
+                        </Form.Group>
+
+                        <div className="d-flex gap-2">
+                          <Button type="submit" variant="primary">
+                            Submit Review
+                          </Button>
+                          <Button
+                            variant="outline-secondary"
+                            onClick={() => setShowReviewForm(false)}
+                          >
+                            Cancel
+                          </Button>
+                        </div>
+                      </Form>
+                    </Card.Body>
+                  </Card>
+                )}
+                
+                {/* Real Reviews */}
+                {reviews.map((review) => (
+                  <div key={review.id} className="review-card">
+                    <div className="d-flex justify-content-between align-items-start mb-2">
+                      <h6 className="mb-0">{review.userName}</h6>
+                      <div>
+                        {renderStars(review.rating)}
+                      </div>
+                    </div>
+                    <p className="text-muted small mb-0">
+                      {new Date(review.createdAt).toLocaleDateString()}
+                    </p>
+                    <p className="mt-2 mb-0">
+                      {review.reviewText}
+                    </p>
+                  </div>
+                ))}
               </Card.Body>
             </Card>
           </Col>

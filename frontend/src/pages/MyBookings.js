@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Card, Button, Badge, Spinner, Alert } from 'react-bootstrap';
 import { FaCalendarAlt, FaUsers, FaMapMarkerAlt, FaUtensils, FaClock } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
-import { toast } from 'react-toastify';
+import toast from 'react-hot-toast';
 import { bookingApi } from '../api/bookingApi';
 
 const MyBookings = () => {

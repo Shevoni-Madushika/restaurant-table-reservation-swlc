@@ -1,7 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { Toaster } from 'react-hot-toast';
 
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
@@ -26,16 +25,31 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
         </Routes>
-        <ToastContainer
+        <Toaster
           position="top-right"
-          autoClose={3000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
+          toastOptions={{
+            duration: 4000,
+            style: {
+              background: '#363636',
+              color: '#fff',
+              borderRadius: '10px',
+              border: '1px solid #ff6b35',
+            },
+            success: {
+              style: {
+                background: '#1a4a1a',
+                color: '#4caf50',
+                border: '1px solid #4caf50',
+              },
+            },
+            error: {
+              style: {
+                background: '#4a1a1a',
+                color: '#ff6b35',
+                border: '1px solid #ff6b35',
+              },
+            },
+          }}
         />
       </div>
     </Router>
