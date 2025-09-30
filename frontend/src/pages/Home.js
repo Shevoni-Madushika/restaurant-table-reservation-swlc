@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Card, Button, Form, Spinner } from 'react-bootstrap';
-import { FaSearch, FaStar, FaMapMarkerAlt, FaUtensils, FaDollarSign } from 'react-icons/fa';
+import { FaSearch, FaStar, FaMapMarkerAlt, FaUtensils } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { restaurantApi } from '../api/restaurantApi';
 
@@ -11,8 +11,7 @@ const Home = () => {
   const [filters, setFilters] = useState({
     city: '',
     cuisine: '',
-    minRating: '',
-    maxPriceRange: ''
+    minRating: ''
   });
 
   useEffect(() => {
@@ -73,9 +72,6 @@ const Home = () => {
     return stars;
   };
 
-  const renderPriceRange = (priceRange) => {
-    return '$'.repeat(priceRange);
-  };
 
   if (loading) {
     return (
@@ -167,25 +163,6 @@ const Home = () => {
                   </Form.Select>
                 </Form.Group>
               </Col>
-              <Col md={2}>
-                <Form.Group className="mb-3">
-                  <Form.Label>
-                    <FaDollarSign className="me-2" />
-                    Max Price
-                  </Form.Label>
-                  <Form.Select
-                    name="maxPriceRange"
-                    value={filters.maxPriceRange}
-                    onChange={handleFilterChange}
-                  >
-                    <option value="">Any Price</option>
-                    <option value="1">$</option>
-                    <option value="2">$$</option>
-                    <option value="3">$$$</option>
-                    <option value="4">$$$$</option>
-                  </Form.Select>
-                </Form.Group>
-              </Col>
             </Row>
             <Row>
               <Col>
@@ -227,25 +204,26 @@ const Home = () => {
                     <FaMapMarkerAlt className="me-1" />
                     {restaurant.city}
                   </Card.Text>
-                  <Card.Text className="text-muted mb-2">
+                  <Card.Text className="text-muted mb-3">
                     <FaUtensils className="me-1" />
                     {restaurant.cuisine}
-                  </Card.Text>
-                  <Card.Text className="text-muted mb-3">
-                    <FaDollarSign className="me-1" />
-                    <span className="price-range">
-                      {renderPriceRange(restaurant.priceRange)}
-                    </span>
                   </Card.Text>
                   <Card.Text className="small text-muted mb-3">
                     {restaurant.description.substring(0, 100)}...
                   </Card.Text>
                   <div className="d-flex justify-content-between align-items-center">
                     <div>
-                      {renderStars(restaurant.rating)}
-                      <span className="ms-2 text-muted">
-                        ({restaurant.totalReviews || 0} reviews)
-                      </span>
+                      {(restaurant.totalReviews && restaurant.totalReviews > 0) && (
+                        <>
+                          {renderStars(restaurant.rating)}
+                          <span className="ms-2 text-muted">
+                            ({restaurant.totalReviews} reviews)
+                          </span>
+                        </>
+                      )}
+                      {(!restaurant.totalReviews || restaurant.totalReviews === 0) && (
+                        <span className="text-muted">No reviews yet</span>
+                      )}
                     </div>
                     <Button
                       as={Link}

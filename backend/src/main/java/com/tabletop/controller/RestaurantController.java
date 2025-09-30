@@ -34,11 +34,10 @@ public class RestaurantController {
     public ResponseEntity<List<RestaurantDTO>> searchRestaurants(
             @RequestParam(required = false) String city,
             @RequestParam(required = false) String cuisine,
-            @RequestParam(required = false) BigDecimal minRating,
-            @RequestParam(required = false) Integer maxPriceRange) {
+            @RequestParam(required = false) BigDecimal minRating) {
         
         List<RestaurantDTO> restaurants = restaurantService.searchRestaurants(
-                city, cuisine, minRating, maxPriceRange);
+                city, cuisine, minRating);
         return ResponseEntity.ok(restaurants);
     }
     

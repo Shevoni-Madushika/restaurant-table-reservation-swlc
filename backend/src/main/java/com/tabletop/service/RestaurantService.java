@@ -38,8 +38,8 @@ public class RestaurantService {
     }
     
     public List<RestaurantDTO> searchRestaurants(String city, String cuisine, 
-                                                BigDecimal minRating, Integer maxPriceRange) {
-        return restaurantRepository.findRestaurantsWithFilters(city, cuisine, minRating, maxPriceRange)
+                                                BigDecimal minRating) {
+        return restaurantRepository.findRestaurantsWithFilters(city, cuisine, minRating)
                 .stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Card, Button, Spinner, Alert } from 'react-bootstrap';
-import { FaStar, FaMapMarkerAlt, FaUtensils, FaDollarSign, FaHeart } from 'react-icons/fa';
+import { FaStar, FaMapMarkerAlt, FaUtensils, FaHeart } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { restaurantApi } from '../api/restaurantApi';
@@ -55,9 +55,6 @@ const Favorites = () => {
     return stars;
   };
 
-  const renderPriceRange = (priceRange) => {
-    return '$'.repeat(priceRange);
-  };
 
   if (loading) {
     return (
@@ -123,25 +120,26 @@ const Favorites = () => {
                         <FaMapMarkerAlt className="me-1" />
                         {restaurant.city}
                       </Card.Text>
-                      <Card.Text className="text-muted mb-2">
+                      <Card.Text className="text-muted mb-3">
                         <FaUtensils className="me-1" />
                         {restaurant.cuisine}
-                      </Card.Text>
-                      <Card.Text className="text-muted mb-3">
-                        <FaDollarSign className="me-1" />
-                        <span className="price-range">
-                          {renderPriceRange(restaurant.priceRange)}
-                        </span>
                       </Card.Text>
                       <Card.Text className="small text-muted mb-3">
                         {restaurant.description.substring(0, 100)}...
                       </Card.Text>
                       <div className="d-flex justify-content-between align-items-center">
                         <div>
-                          {renderStars(restaurant.rating)}
-                          <span className="ms-2 text-muted">
-                            ({restaurant.totalReviews || 0} reviews)
-                          </span>
+                          {(restaurant.totalReviews && restaurant.totalReviews > 0) && (
+                            <>
+                              {renderStars(restaurant.rating)}
+                              <span className="ms-2 text-muted">
+                                ({restaurant.totalReviews} reviews)
+                              </span>
+                            </>
+                          )}
+                          {(!restaurant.totalReviews || restaurant.totalReviews === 0) && (
+                            <span className="text-muted">No reviews yet</span>
+                          )}
                         </div>
                         <div>
                           <Button

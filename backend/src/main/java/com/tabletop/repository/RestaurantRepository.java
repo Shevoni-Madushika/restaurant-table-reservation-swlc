@@ -27,13 +27,11 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
            "(:city IS NULL OR LOWER(r.city) LIKE LOWER(CONCAT('%', :city, '%'))) AND " +
            "(:cuisine IS NULL OR LOWER(r.cuisine) LIKE LOWER(CONCAT('%', :cuisine, '%'))) AND " +
            "(:minRating IS NULL OR r.rating >= :minRating) AND " +
-           "(:maxPriceRange IS NULL OR r.priceRange <= :maxPriceRange) AND " +
            "r.isActive = true")
     List<Restaurant> findRestaurantsWithFilters(
         @Param("city") String city,
         @Param("cuisine") String cuisine,
-        @Param("minRating") java.math.BigDecimal minRating,
-        @Param("maxPriceRange") Integer maxPriceRange
+        @Param("minRating") java.math.BigDecimal minRating
     );
     
     @Query("SELECT r FROM Restaurant r WHERE " +

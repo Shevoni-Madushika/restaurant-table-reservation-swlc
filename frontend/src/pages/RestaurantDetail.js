@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { Container, Row, Col, Card, Button, Form, Spinner, Alert, Badge } from 'react-bootstrap';
-import { FaStar, FaMapMarkerAlt, FaPhone, FaGlobe, FaUtensils, FaDollarSign, FaUsers, FaCalendarAlt, FaSignInAlt } from 'react-icons/fa';
+import { FaStar, FaMapMarkerAlt, FaPhone, FaGlobe, FaUtensils, FaUsers, FaCalendarAlt, FaSignInAlt } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import { restaurantApi } from '../api/restaurantApi';
 import { bookingApi } from '../api/bookingApi';
@@ -130,9 +130,6 @@ const RestaurantDetail = () => {
     return stars;
   };
 
-  const renderPriceRange = (priceRange) => {
-    return '$'.repeat(priceRange);
-  };
 
   if (loading) {
     return (
@@ -164,17 +161,15 @@ const RestaurantDetail = () => {
               <h1 className="display-4 fw-bold mb-3">{restaurant.name}</h1>
               <p className="lead mb-4">{restaurant.description}</p>
               <div className="d-flex align-items-center mb-4">
-                <div className="me-4">
-                  {renderStars(restaurant.rating)}
-                  <span className="ms-2 fs-5">{restaurant.rating}</span>
-                </div>
+                {(restaurant.totalReviews && restaurant.totalReviews > 0) && (
+                  <div className="me-4">
+                    {renderStars(restaurant.rating)}
+                    <span className="ms-2 fs-5">{restaurant.rating}</span>
+                  </div>
+                )}
                 <Badge bg="success" className="me-3">
                   <FaUtensils className="me-1" />
                   {restaurant.cuisine}
-                </Badge>
-                <Badge bg="info" className="me-3">
-                  <FaDollarSign className="me-1" />
-                  {renderPriceRange(restaurant.priceRange)}
                 </Badge>
                 <Badge bg="secondary">
                   <FaMapMarkerAlt className="me-1" />
@@ -255,13 +250,19 @@ const RestaurantDetail = () => {
                 <h4 className="mb-0">Reviews ({restaurant.totalReviews || 0})</h4>
               </Card.Header>
               <Card.Body>
-                <div className="text-center py-4">
-                  <h2 className="display-6">{restaurant.rating}</h2>
-                  <div className="mb-3">
-                    {renderStars(restaurant.rating)}
+                {(restaurant.totalReviews && restaurant.totalReviews > 0) ? (
+                  <div className="text-center py-4">
+                    <h2 className="display-6">{restaurant.rating}</h2>
+                    <div className="mb-3">
+                      {renderStars(restaurant.rating)}
+                    </div>
+                    <p className="text-muted">Based on {restaurant.totalReviews} reviews</p>
                   </div>
-                  <p className="text-muted">Based on {restaurant.totalReviews || 0} reviews</p>
-                </div>
+                ) : (
+                  <div className="text-center py-4">
+                    <p className="text-muted">No reviews yet</p>
+                  </div>
+                )}
                 
                 {/* Sample Reviews */}
                 <div className="review-card">

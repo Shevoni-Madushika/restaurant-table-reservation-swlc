@@ -87,10 +87,7 @@ const Navbar = () => {
         <BootstrapNavbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
             {(!isLoggedIn || user?.role !== 'ADMIN') && (
-              <>
-                <Nav.Link as={Link} to="/">Home</Nav.Link>
-                <Nav.Link as={Link} to="/restaurants">Restaurants</Nav.Link>
-              </>
+              <Nav.Link as={Link} to="/">Home</Nav.Link>
             )}
             {isLoggedIn && user?.role !== 'ADMIN' && (
               <>
