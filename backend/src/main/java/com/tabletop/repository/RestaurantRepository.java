@@ -21,6 +21,8 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
     
     List<Restaurant> findByIsActiveTrue();
     
+    List<Restaurant> findByName(String name);
+    
     @Query("SELECT r FROM Restaurant r WHERE " +
            "(:city IS NULL OR LOWER(r.city) LIKE LOWER(CONCAT('%', :city, '%'))) AND " +
            "(:cuisine IS NULL OR LOWER(r.cuisine) LIKE LOWER(CONCAT('%', :cuisine, '%'))) AND " +

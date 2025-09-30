@@ -125,6 +125,34 @@ const AdminPanel = () => {
     return <Badge bg={config.variant}>{config.text}</Badge>;
   };
 
+  const getMostBookedRestaurants = () => {
+    const restaurantBookingCounts = {};
+    
+    // Count bookings for each restaurant
+    bookings.forEach(booking => {
+      const restaurantId = booking.restaurantId;
+      if (restaurantBookingCounts[restaurantId]) {
+        restaurantBookingCounts[restaurantId]++;
+      } else {
+        restaurantBookingCounts[restaurantId] = 1;
+      }
+    });
+
+    // Create array with restaurant data and booking counts
+    return restaurants
+      .map(restaurant => ({
+        ...restaurant,
+        bookingCount: restaurantBookingCounts[restaurant.id] || 0
+      }))
+      .sort((a, b) => b.bookingCount - a.bookingCount);
+  };
+
+  const getHighestRatedRestaurants = () => {
+    return restaurants
+      .slice()
+      .sort((a, b) => parseFloat(b.rating) - parseFloat(a.rating));
+  };
+
   if (loading) {
     return (
       <div className="loading-spinner">
@@ -186,6 +214,74 @@ const AdminPanel = () => {
                       {bookings.filter(b => b.status === 'PENDING').length}
                     </div>
                     <div className="stats-label">Pending Bookings</div>
+                  </Card.Body>
+                </Card>
+              </Col>
+            </Row>
+
+            {/* Analytics Section */}
+            <Row className="mb-5">
+              <Col md={6}>
+                <Card>
+                  <Card.Header>
+                    <h4 className="mb-0">
+                      <FaChartBar className="me-2" />
+                      Most Booked Restaurants
+                    </h4>
+                  </Card.Header>
+                  <Card.Body>
+                    {getMostBookedRestaurants().length > 0 ? (
+                      <div className="analytics-list">
+                        {getMostBookedRestaurants().slice(0, 5).map((restaurant, index) => (
+                          <div key={restaurant.id} className="analytics-item">
+                            <div className="d-flex justify-content-between align-items-center">
+                              <div>
+                                <strong>{index + 1}. {restaurant.name}</strong>
+                                <br />
+                                <small className="text-muted">{restaurant.city} • {restaurant.cuisine}</small>
+                              </div>
+                              <Badge bg="primary">{restaurant.bookingCount} bookings</Badge>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <p className="text-muted">No booking data available</p>
+                    )}
+                  </Card.Body>
+                </Card>
+              </Col>
+              <Col md={6}>
+                <Card>
+                  <Card.Header>
+                    <h4 className="mb-0">
+                      <FaChartBar className="me-2" />
+                      Highest Rated Restaurants
+                    </h4>
+                  </Card.Header>
+                  <Card.Body>
+                    {getHighestRatedRestaurants().length > 0 ? (
+                      <div className="analytics-list">
+                        {getHighestRatedRestaurants().slice(0, 5).map((restaurant, index) => (
+                          <div key={restaurant.id} className="analytics-item">
+                            <div className="d-flex justify-content-between align-items-center">
+                              <div>
+                                <strong>{index + 1}. {restaurant.name}</strong>
+                                <br />
+                                <small className="text-muted">{restaurant.city} • {restaurant.cuisine}</small>
+                              </div>
+                              <div className="text-end">
+                                <Badge bg="warning">{restaurant.rating} ⭐</Badge>
+                                <br />
+                                <small className="text-muted">{restaurant.priceRange} {'$'.repeat(restaurant.priceRange)}</small>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <p className="text-muted">No rating data available</p>
+                    )}
                   </Card.Body>
                 </Card>
               </Col>
