@@ -169,14 +169,33 @@ const Home = () => {
       {/* Hero Section */}
       <div className="hero-section">
         <Container>
-          <Row className="text-center">
+          <Row className="text-center align-items-center" style={{ minHeight: '60vh' }}>
             <Col>
-              <h1 className="display-4 fw-bold mb-4">
-                Discover Amazing Restaurants
-              </h1>
-              <p className="lead mb-5">
-                Find and book tables at the best restaurants in Sri Lanka
-              </p>
+              <div className="hero-content">
+                <h1 className="display-3 fw-bold mb-4 hero-title">
+                  Savor Every Moment
+                </h1>
+                <p className="lead mb-4 hero-subtitle">
+                  Experience culinary excellence across Sri Lanka's finest dining destinations
+                </p>
+                <p className="hero-description mb-5">
+                  From traditional Sri Lankan flavors to international cuisine, discover restaurants that create unforgettable dining experiences. Book your perfect table in just a few clicks.
+                </p>
+                <div className="hero-stats">
+                  <div className="stat-item">
+                    <span className="stat-number">500+</span>
+                    <span className="stat-label">Restaurants</span>
+                  </div>
+                  <div className="stat-item">
+                    <span className="stat-number">50K+</span>
+                    <span className="stat-label">Happy Diners</span>
+                  </div>
+                  <div className="stat-item">
+                    <span className="stat-number">4.8★</span>
+                    <span className="stat-label">Average Rating</span>
+                  </div>
+                </div>
+              </div>
             </Col>
           </Row>
         </Container>

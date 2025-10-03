@@ -15,6 +15,8 @@ public class RestaurantDTO {
     private String phoneNumber;
     private String website;
     private String imageUrl;
+    private String bookingApiUrl;
+    private String secretKey;
     private Boolean isActive;
     private Long totalBookings;
     private Long totalReviews;
@@ -56,6 +58,12 @@ public class RestaurantDTO {
     
     public String getImageUrl() { return imageUrl; }
     public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
+    
+    public String getBookingApiUrl() { return bookingApiUrl; }
+    public void setBookingApiUrl(String bookingApiUrl) { this.bookingApiUrl = bookingApiUrl; }
+    
+    public String getSecretKey() { return secretKey; }
+    public void setSecretKey(String secretKey) { this.secretKey = secretKey; }
     
     public Boolean getIsActive() { return isActive; }
     public void setIsActive(Boolean isActive) { this.isActive = isActive; }

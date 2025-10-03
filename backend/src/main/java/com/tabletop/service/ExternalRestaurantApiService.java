@@ -26,16 +26,25 @@ public class ExternalRestaurantApiService {
     private final RestTemplate restTemplate = new RestTemplate();
     
     public ExternalBookingResult callRestaurantApi(Long restaurantId, BookingDTO bookingDTO) {
-        RestaurantApiConfig.RestaurantApiInfo apiInfo = restaurantApiConfig.getRestaurantApi(restaurantId);
+        // Get restaurant from database to access booking API URL
+        Restaurant restaurant = restaurantRepository.findById(restaurantId)
+                .orElseThrow(() -> new RuntimeException("Restaurant not found"));
         
-        if (apiInfo == null) {
-            return new ExternalBookingResult(false, "Restaurant API not configured", null);
+        String bookingApiUrl = restaurant.getBookingApiUrl();
+        if (bookingApiUrl == null || bookingApiUrl.trim().isEmpty()) {
+            return new ExternalBookingResult(false, "Restaurant booking API not configured", null);
         }
         
         try {
             // Prepare request headers
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
+            
+            // Add secret key to headers if available
+            String secretKey = restaurant.getSecretKey();
+            if (secretKey != null && !secretKey.trim().isEmpty()) {
+                headers.set("X-API-Key", secretKey);
+            }
             
             // Prepare request body
             Map<String, Object> requestBody = new HashMap<>();
@@ -48,8 +57,8 @@ public class ExternalRestaurantApiService {
             
             // Make the API call
             ResponseEntity<Map> response = restTemplate.exchange(
-                apiInfo.getUrl(),
-                HttpMethod.valueOf(apiInfo.getMethod()),
+                bookingApiUrl,
+                HttpMethod.POST,
                 request,
                 Map.class
             );

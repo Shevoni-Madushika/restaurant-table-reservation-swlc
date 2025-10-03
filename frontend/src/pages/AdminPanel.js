@@ -18,10 +18,11 @@ const AdminPanel = () => {
     city: '',
     cuisine: '',
     rating: '',
-    priceRange: '',
     phoneNumber: '',
     website: '',
-    imageUrl: ''
+    imageUrl: '',
+    bookingApiUrl: '',
+    secretKey: ''
   });
 
   useEffect(() => {
@@ -64,10 +65,11 @@ const AdminPanel = () => {
         city: '',
         cuisine: '',
         rating: '',
-        priceRange: '',
         phoneNumber: '',
         website: '',
-        imageUrl: ''
+        imageUrl: '',
+        bookingApiUrl: '',
+        secretKey: ''
       });
       fetchData();
     } catch (error) {
@@ -85,10 +87,11 @@ const AdminPanel = () => {
       city: restaurant.city,
       cuisine: restaurant.cuisine,
       rating: restaurant.rating,
-      priceRange: restaurant.priceRange,
       phoneNumber: restaurant.phoneNumber || '',
       website: restaurant.website || '',
-      imageUrl: restaurant.imageUrl || ''
+      imageUrl: restaurant.imageUrl || '',
+      bookingApiUrl: restaurant.bookingApiUrl || '',
+      secretKey: restaurant.secretKey || ''
     });
     setShowRestaurantModal(true);
   };
@@ -273,7 +276,7 @@ const AdminPanel = () => {
                               <div className="text-end">
                                 <Badge bg="warning">{restaurant.rating} ⭐</Badge>
                                 <br />
-                                <small className="text-muted">{restaurant.priceRange} {'$'.repeat(restaurant.priceRange)}</small>
+                                <small className="text-muted">{restaurant.city}</small>
                               </div>
                             </div>
                           </div>
@@ -303,7 +306,7 @@ const AdminPanel = () => {
                       <th>City</th>
                       <th>Cuisine</th>
                       <th>Rating</th>
-                      <th>Price Range</th>
+                      <th>API Status</th>
                       <th>Actions</th>
                     </tr>
                   </thead>
@@ -322,7 +325,13 @@ const AdminPanel = () => {
                         <td>
                           <Badge bg="warning">{restaurant.rating}</Badge>
                         </td>
-                        <td>{'$'.repeat(restaurant.priceRange)}</td>
+                        <td>
+                          {restaurant.bookingApiUrl ? (
+                            <Badge bg="success">Configured</Badge>
+                          ) : (
+                            <Badge bg="warning">Not Set</Badge>
+                          )}
+                        </td>
                         <td>
                           <Button
                             variant="outline-primary"
@@ -475,19 +484,13 @@ const AdminPanel = () => {
               </Col>
               <Col md={6}>
                 <Form.Group className="mb-3">
-                  <Form.Label>Price Range</Form.Label>
-                  <Form.Select
-                    name="priceRange"
-                    value={restaurantForm.priceRange}
+                  <Form.Label>Phone Number</Form.Label>
+                  <Form.Control
+                    type="tel"
+                    name="phoneNumber"
+                    value={restaurantForm.phoneNumber}
                     onChange={handleInputChange}
-                    required
-                  >
-                    <option value="">Select Price Range</option>
-                    <option value="1">$ (Budget)</option>
-                    <option value="2">$$ (Moderate)</option>
-                    <option value="3">$$$ (Expensive)</option>
-                    <option value="4">$$$$ (Very Expensive)</option>
-                  </Form.Select>
+                  />
                 </Form.Group>
               </Col>
             </Row>
@@ -510,26 +513,16 @@ const AdminPanel = () => {
               </Col>
               <Col md={6}>
                 <Form.Group className="mb-3">
-                  <Form.Label>Phone Number</Form.Label>
+                  <Form.Label>Website</Form.Label>
                   <Form.Control
-                    type="tel"
-                    name="phoneNumber"
-                    value={restaurantForm.phoneNumber}
+                    type="url"
+                    name="website"
+                    value={restaurantForm.website}
                     onChange={handleInputChange}
                   />
                 </Form.Group>
               </Col>
             </Row>
-
-            <Form.Group className="mb-3">
-              <Form.Label>Website</Form.Label>
-              <Form.Control
-                type="url"
-                name="website"
-                value={restaurantForm.website}
-                onChange={handleInputChange}
-              />
-            </Form.Group>
 
             <Form.Group className="mb-3">
               <Form.Label>Image URL</Form.Label>
@@ -540,6 +533,38 @@ const AdminPanel = () => {
                 onChange={handleInputChange}
               />
             </Form.Group>
+
+            <hr className="my-4" />
+            <h5 className="mb-3">🔗 Booking API Configuration</h5>
+            
+            <Form.Group className="mb-3">
+              <Form.Label>Booking API URL</Form.Label>
+              <Form.Control
+                type="url"
+                name="bookingApiUrl"
+                value={restaurantForm.bookingApiUrl}
+                onChange={handleInputChange}
+                placeholder="https://example.com/api/booking"
+              />
+              <Form.Text className="text-muted">
+                Enter the external booking API endpoint for this restaurant
+              </Form.Text>
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label>Secret Key</Form.Label>
+              <Form.Control
+                type="text"
+                name="secretKey"
+                value={restaurantForm.secretKey}
+                onChange={handleInputChange}
+                placeholder="restaurant_secret_key_2024"
+              />
+              <Form.Text className="text-muted">
+                Secret key for the external booking API (for display purposes)
+              </Form.Text>
+            </Form.Group>
+
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={() => setShowRestaurantModal(false)}>

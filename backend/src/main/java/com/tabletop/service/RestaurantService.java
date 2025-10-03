@@ -110,6 +110,8 @@ public class RestaurantService {
         restaurant.setPhoneNumber(restaurantDetails.getPhoneNumber());
         restaurant.setWebsite(restaurantDetails.getWebsite());
         restaurant.setImageUrl(restaurantDetails.getImageUrl());
+        restaurant.setBookingApiUrl(restaurantDetails.getBookingApiUrl());
+        restaurant.setSecretKey(restaurantDetails.getSecretKey());
         
         Restaurant updatedRestaurant = restaurantRepository.save(restaurant);
         return convertToDTO(updatedRestaurant);
@@ -135,6 +137,8 @@ public class RestaurantService {
         dto.setPhoneNumber(restaurant.getPhoneNumber());
         dto.setWebsite(restaurant.getWebsite());
         dto.setImageUrl(restaurant.getImageUrl());
+        dto.setBookingApiUrl(restaurant.getBookingApiUrl());
+        dto.setSecretKey(restaurant.getSecretKey());
         dto.setIsActive(restaurant.getIsActive());
         
         // Set additional statistics

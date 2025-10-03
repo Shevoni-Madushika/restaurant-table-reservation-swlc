@@ -47,6 +47,12 @@ public class Restaurant {
     private String website;
     private String imageUrl;
     
+    @Column(name = "booking_api_url")
+    private String bookingApiUrl;
+    
+    @Column(name = "secret_key")
+    private String secretKey;
+    
     @Column(name = "is_active")
     private Boolean isActive = true;
     
@@ -103,6 +109,12 @@ public class Restaurant {
     
     public String getImageUrl() { return imageUrl; }
     public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
+    
+    public String getBookingApiUrl() { return bookingApiUrl; }
+    public void setBookingApiUrl(String bookingApiUrl) { this.bookingApiUrl = bookingApiUrl; }
+    
+    public String getSecretKey() { return secretKey; }
+    public void setSecretKey(String secretKey) { this.secretKey = secretKey; }
     
     public Boolean getIsActive() { return isActive; }
     public void setIsActive(Boolean isActive) { this.isActive = isActive; }

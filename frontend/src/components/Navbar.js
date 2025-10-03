@@ -72,72 +72,86 @@ const Navbar = () => {
 
 
   return (
-    <BootstrapNavbar bg="dark" expand="lg" className="shadow-sm" variant="dark">
+    <BootstrapNavbar bg="dark" expand="lg" className="navbar-custom shadow-lg" variant="dark">
       <Container>
         <BootstrapNavbar.Brand 
           as={Link} 
           to={isLoggedIn && user?.role === 'ADMIN' ? "/admin" : "/"} 
-          className="fw-bold"
+          className="navbar-brand-custom fw-bold"
         >
-          🍽️ TableTop.lk
+          <span className="brand-icon">🍽️</span>
+          <span className="brand-text">TableTop.lk</span>
         </BootstrapNavbar.Brand>
         
-        <BootstrapNavbar.Toggle aria-controls="basic-navbar-nav" />
+        <BootstrapNavbar.Toggle aria-controls="basic-navbar-nav" className="navbar-toggle-custom" />
         
         <BootstrapNavbar.Collapse id="basic-navbar-nav">
-          <Nav className="me-auto">
+          <Nav className="me-auto navbar-nav-custom">
             {(!isLoggedIn || user?.role !== 'ADMIN') && (
-              <Nav.Link as={Link} to="/">Home</Nav.Link>
+              <Nav.Link as={Link} to="/" className="nav-link-custom">
+                <span className="nav-icon">🏠</span>
+                <span className="nav-text">Home</span>
+              </Nav.Link>
             )}
             {isLoggedIn && user?.role !== 'ADMIN' && (
               <>
-                <Nav.Link as={Link} to="/my-bookings">My Bookings</Nav.Link>
-                <Nav.Link as={Link} to="/favorites">Favorites</Nav.Link>
+                <Nav.Link as={Link} to="/my-bookings" className="nav-link-custom">
+                  <span className="nav-icon">📅</span>
+                  <span className="nav-text">My Bookings</span>
+                </Nav.Link>
+                <Nav.Link as={Link} to="/favorites" className="nav-link-custom">
+                  <span className="nav-icon">❤️</span>
+                  <span className="nav-text">Favorites</span>
+                </Nav.Link>
               </>
             )}
           </Nav>
           
-          <Nav>
+          <Nav className="navbar-actions">
             {isLoggedIn ? (
               <Dropdown>
-                <Dropdown.Toggle variant="outline-primary" id="dropdown-basic">
+                <Dropdown.Toggle variant="outline-primary" id="dropdown-basic" className="user-dropdown-custom">
                   <FaUser className="me-2" />
-                  {user?.firstName || 'User'}
+                  <span className="user-name">{user?.firstName || 'User'}</span>
                 </Dropdown.Toggle>
-                <Dropdown.Menu>
+                <Dropdown.Menu className="dropdown-menu-custom">
                   {user?.role !== 'ADMIN' && (
                     <>
-                      <Dropdown.Item as={Link} to="/my-bookings">
+                      <Dropdown.Item as={Link} to="/my-bookings" className="dropdown-item-custom">
+                        <span className="dropdown-icon">📅</span>
                         My Bookings
                       </Dropdown.Item>
-                      <Dropdown.Item as={Link} to="/favorites">
+                      <Dropdown.Item as={Link} to="/favorites" className="dropdown-item-custom">
+                        <span className="dropdown-icon">❤️</span>
                         Favorites
                       </Dropdown.Item>
-                      <Dropdown.Divider />
+                      <Dropdown.Divider className="dropdown-divider-custom" />
                     </>
                   )}
                   {user?.role === 'ADMIN' && (
-                    <Dropdown.Item as={Link} to="/admin">
+                    <Dropdown.Item as={Link} to="/admin" className="dropdown-item-custom">
                       <FaCog className="me-2" />
                       Admin Panel
                     </Dropdown.Item>
                   )}
-                  <Dropdown.Divider />
-                  <Dropdown.Item onClick={handleLogout}>
+                  <Dropdown.Divider className="dropdown-divider-custom" />
+                  <Dropdown.Item onClick={handleLogout} className="dropdown-item-custom logout-item">
                     <FaSignOutAlt className="me-2" />
                     Logout
                   </Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
             ) : (
-              <>
-                <Button variant="outline-primary" as={Link} to="/login" className="me-2">
-                  Login
+              <div className="auth-buttons">
+                <Button variant="outline-primary" as={Link} to="/login" className="auth-btn-custom me-2">
+                  <span className="btn-icon">🔑</span>
+                  <span className="btn-text">Login</span>
                 </Button>
-                <Button variant="primary" as={Link} to="/register">
-                  Sign Up
+                <Button variant="primary" as={Link} to="/register" className="auth-btn-custom">
+                  <span className="btn-icon">✨</span>
+                  <span className="btn-text">Sign Up</span>
                 </Button>
-              </>
+              </div>
             )}
           </Nav>
         </BootstrapNavbar.Collapse>

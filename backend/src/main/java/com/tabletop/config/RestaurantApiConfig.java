@@ -17,33 +17,33 @@ public class RestaurantApiConfig {
     }
     
     private void initializeRestaurantApis() {
-        // The Spice Garden - Port 4000 - Success (200)
+        // Colombo Spice House - Port 4000 - Success (200)
         restaurantApis.put(1L, new RestaurantApiInfo(
-            "http://localhost:4000/api/v1/spice-garden/easy-booking",
+            "http://localhost:4000/api/v1/colombo-spice/booking",
             "POST"
         ));
         
-        // Bamboo Garden - Port 4001 - Server Error (500)
+        // Kandy Royal Palace - Port 4001 - Server Error (500)
         restaurantApis.put(2L, new RestaurantApiInfo(
-            "http://localhost:4001/bamboo/api/v1/rest/booking",
+            "http://localhost:4001/kandy/api/v1/royal/booking",
             "POST"
         ));
         
-        // Ocean Breeze - Port 4002 - Bad Request (400)
+        // Galle Fort Bistro - Port 4002 - Bad Request (400)
         restaurantApis.put(3L, new RestaurantApiInfo(
-            "http://localhost:4002/ocean/api/v2/reservations/book",
+            "http://localhost:4002/galle/api/v2/fort/reservations",
             "POST"
         ));
         
-        // Golden Dragon - Port 4003 - Created (201)
+        // Negombo Beach Resort - Port 4003 - Created (201)
         restaurantApis.put(4L, new RestaurantApiInfo(
-            "http://localhost:4003/golden/api/v1/table-booking",
+            "http://localhost:4003/negombo/api/v1/beach/table-booking",
             "POST"
         ));
         
-        // Mountain View - Port 4004 - Created (201)
+        // Anuradhapura Heritage - Port 4004 - Created (201)
         restaurantApis.put(5L, new RestaurantApiInfo(
-            "http://localhost:4004/mountain/api/v3/reserve-table",
+            "http://localhost:4004/anuradhapura/api/v3/heritage/reserve",
             "POST"
         ));
     }
