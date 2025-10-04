@@ -70,8 +70,7 @@ public class DataInitializationService implements CommandLineRunner {
                 "123 Galle Road, Colombo 03",
                 "Colombo",
                 "Sri Lankan",
-                new BigDecimal("4.5"),
-                2
+                new BigDecimal("4.5")
             );
             restaurant1.setPhoneNumber("+94 11 234 5678");
             restaurant1.setWebsite("https://colombospice.lk");
@@ -88,8 +87,7 @@ public class DataInitializationService implements CommandLineRunner {
                 "456 Kandy Road, Kandy",
                 "Kandy",
                 "Asian Fusion",
-                new BigDecimal("4.3"),
-                3
+                new BigDecimal("4.3")
             );
             restaurant2.setPhoneNumber("+94 81 234 5678");
             restaurant2.setWebsite("https://kandyroyal.lk");
@@ -106,8 +104,7 @@ public class DataInitializationService implements CommandLineRunner {
                 "789 Church Street, Galle Fort",
                 "Galle",
                 "French",
-                new BigDecimal("4.7"),
-                4
+                new BigDecimal("4.7")
             );
             restaurant3.setPhoneNumber("+94 91 234 5678");
             restaurant3.setWebsite("https://gallefortbistro.lk");
@@ -124,8 +121,7 @@ public class DataInitializationService implements CommandLineRunner {
                 "321 Beach Road, Negombo",
                 "Negombo",
                 "Seafood",
-                new BigDecimal("4.6"),
-                3
+                new BigDecimal("4.6")
             );
             restaurant4.setPhoneNumber("+94 31 345 6789");
             restaurant4.setWebsite("https://negombobeach.lk");
@@ -142,8 +138,7 @@ public class DataInitializationService implements CommandLineRunner {
                 "258 Sacred City Road, Anuradhapura",
                 "Anuradhapura",
                 "Traditional Sri Lankan",
-                new BigDecimal("4.8"),
-                2
+                new BigDecimal("4.8")
             );
             restaurant5.setPhoneNumber("+94 25 567 8901");
             restaurant5.setWebsite("https://anuradhapuraheritage.lk");

@@ -38,10 +38,6 @@ public class Restaurant {
     @DecimalMax(value = "5.0", message = "Rating must be at most 5.0")
     private BigDecimal rating;
     
-    @NotNull(message = "Price range is required")
-    @DecimalMin(value = "1.0", message = "Price range must be at least 1")
-    @DecimalMax(value = "4.0", message = "Price range must be at most 4")
-    private Integer priceRange; // 1-4 dollar signs
     
     private String phoneNumber;
     private String website;
@@ -66,14 +62,13 @@ public class Restaurant {
     public Restaurant() {}
     
     public Restaurant(String name, String description, String address, String city, 
-                     String cuisine, BigDecimal rating, Integer priceRange) {
+                     String cuisine, BigDecimal rating) {
         this.name = name;
         this.description = description;
         this.address = address;
         this.city = city;
         this.cuisine = cuisine;
         this.rating = rating;
-        this.priceRange = priceRange;
     }
     
     // Getters and Setters
@@ -97,9 +92,6 @@ public class Restaurant {
     
     public BigDecimal getRating() { return rating; }
     public void setRating(BigDecimal rating) { this.rating = rating; }
-    
-    public Integer getPriceRange() { return priceRange; }
-    public void setPriceRange(Integer priceRange) { this.priceRange = priceRange; }
     
     public String getPhoneNumber() { return phoneNumber; }
     public void setPhoneNumber(String phoneNumber) { this.phoneNumber = phoneNumber; }

@@ -17,8 +17,6 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
     
     List<Restaurant> findByRatingGreaterThanEqual(java.math.BigDecimal rating);
     
-    List<Restaurant> findByPriceRange(Integer priceRange);
-    
     List<Restaurant> findByIsActiveTrue();
     
     List<Restaurant> findByName(String name);

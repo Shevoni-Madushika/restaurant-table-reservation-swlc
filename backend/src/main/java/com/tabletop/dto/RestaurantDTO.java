@@ -11,7 +11,6 @@ public class RestaurantDTO {
     private String city;
     private String cuisine;
     private BigDecimal rating;
-    private Integer priceRange;
     private String phoneNumber;
     private String website;
     private String imageUrl;
@@ -46,9 +45,6 @@ public class RestaurantDTO {
     
     public BigDecimal getRating() { return rating; }
     public void setRating(BigDecimal rating) { this.rating = rating; }
-    
-    public Integer getPriceRange() { return priceRange; }
-    public void setPriceRange(Integer priceRange) { this.priceRange = priceRange; }
     
     public String getPhoneNumber() { return phoneNumber; }
     public void setPhoneNumber(String phoneNumber) { this.phoneNumber = phoneNumber; }

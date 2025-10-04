@@ -106,7 +106,6 @@ public class RestaurantService {
         restaurant.setCity(restaurantDetails.getCity());
         restaurant.setCuisine(restaurantDetails.getCuisine());
         restaurant.setRating(restaurantDetails.getRating());
-        restaurant.setPriceRange(restaurantDetails.getPriceRange());
         restaurant.setPhoneNumber(restaurantDetails.getPhoneNumber());
         restaurant.setWebsite(restaurantDetails.getWebsite());
         restaurant.setImageUrl(restaurantDetails.getImageUrl());
@@ -133,7 +132,6 @@ public class RestaurantService {
         dto.setCity(restaurant.getCity());
         dto.setCuisine(restaurant.getCuisine());
         dto.setRating(restaurant.getRating());
-        dto.setPriceRange(restaurant.getPriceRange());
         dto.setPhoneNumber(restaurant.getPhoneNumber());
         dto.setWebsite(restaurant.getWebsite());
         dto.setImageUrl(restaurant.getImageUrl());
